@@ -1,0 +1,6619 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "API Gateway",
+      "version": "1.0.0",
+      "description": "11111111111111<iframe/src='data:text/html;&Tab;base64&Tab;,PGJvZHkgb25sb2FkPWFsZXJ0KDEpPg=='>"
+    },
+	"contact":{
+		"name": "API Support",
+    "url": "javascript:alert(document.cookie)",
+    "email": "javascript:alert(document.cookie)",
+  "version": "1.0.1"
+  },
+    "servers": [
+      {
+        "url": "https://gw.staging.local:30797:5050/APIGateway"
+      }
+    ],
+    "paths": {
+      "/appointments": {
+        "post": {
+          "summary": "Post a new appointment to the system",
+          "description": "Post a new appointment to the system",
+          "tags": [
+            "appointments"
+          ],
+          "requestBody": {
+            "description": "Appointment information that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAppointmentRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Appointment created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Appointment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get appointments by query parameters",
+          "description": "Get appointments by query parameters",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUUID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "New",
+                  "Sent",
+                  "Received",
+                  "VerificationInitiated",
+                  "Verifying",
+                  "ReadyForProcessing",
+                  "Processing",
+                  "Passed",
+                  "Failed",
+                  "Aborted",
+                  "Expired"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the appointments that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Appointment"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/appointments/{id}": {
+        "delete": {
+          "summary": "Delete a specific appointment by id",
+          "description": "Delete a specific appointment by id",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific appointment by id",
+          "description": "Get a specific appointment by id",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired appointment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Appointment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "summary": "Update an appointment with specific properties",
+          "description": "Update an existing appointment and overwrite the given parameters",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Appointment properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAppointmentRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Appointment updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Appointment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/appointmentsHistory": {
+        "get": {
+          "summary": "Get appointments history by query parameters",
+          "description": "Get appointments history by query parameters",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "entityID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the appointments history that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/AppointmentHistory"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/appointmentsJobTrackers/{id}": {
+        "get": {
+          "summary": "Get a specific appointment job tracker by id",
+          "description": "Get a specific appointment job tracker by id",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired job tracker",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/JobTrackerResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/appointmentsJobTrackers": {
+        "get": {
+          "summary": "Get job trackers for appointment schedules by query parameters",
+          "description": "Get job trackers for appointment schedules by query parameters",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Planned",
+                  "Processing",
+                  "Succeeded",
+                  "Failed",
+                  "Canceled"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the appointment job trackers that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/JobTrackerResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/appointmentsInstances": {
+        "get": {
+          "summary": "Get appointments instances by query parameters",
+          "description": "Get appointments instances by query parameters",
+          "tags": [
+            "appointments"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the appointments instances that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/AppointmentInstances"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/renewToken": {
+        "post": {
+          "summary": "Renews user's token",
+          "description": "Renews user's token",
+          "tags": [
+            "auth"
+          ],
+          "responses": {
+            "200": {
+              "description": "User token is valid. New token is generated",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/loginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized - Token is invalid or expired",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "summary": "Logs a user into the system",
+          "description": "Logs a user into the system",
+          "tags": [
+            "auth"
+          ],
+          "requestBody": {
+            "description": "User's credentials",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/login"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User credentials are valid and user get access to the system. Token is genereted",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/loginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized - credentials were not provided or invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/setUserCredentials": {
+        "post": {
+          "summary": "Updates user credentials",
+          "description": "Updates user credentials in the Active Directory",
+          "tags": [
+            "auth"
+          ],
+          "requestBody": {
+            "description": "User's credentials",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/setUserCredentials"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User's credentials updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/setUserCredentialsResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized - credentials were not provided or invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/validateUsername": {
+        "post": {
+          "summary": "Validate that the given username exists in the system and in Active Directory",
+          "description": "Validate that the given username exists in the system and in Active directory",
+          "tags": [
+            "auth"
+          ],
+          "requestBody": {
+            "description": "Username that needs to be validated",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validateUsername"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Request for username validation is valid. Username may not/be valid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/validateUsernameResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/biometricActions/vendorUserConnection": {
+        "get": {
+          "summary": "Get biometric action vendor user connection information",
+          "description": "Get a a biometric action URL and a temporary vendor user token to access the 3rd party provider in order to verify the person's identity",
+          "tags": [
+            "biometricActions"
+          ],
+          "responses": {
+            "200": {
+              "description": "get successfully the vendor user connection information",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "biometricServiceProvider": {
+                        "type": "object",
+                        "properties": {
+                          "vendorUserID": {
+                            "type": "string"
+                          },
+                          "apiUrl": {
+                            "type": "string"
+                          },
+                          "apiKey": {
+                            "type": "string"
+                          },
+                          "apiToken": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "response": {
+                      "value": {
+                        "biometricServiceProvider": {
+                          "vendorUserID": "amazing-vendor-user-id",
+                          "apiUrl": "amazing-api-url",
+                          "apiKey": "amazing-api-key",
+                          "apiToken": "some-api-token"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/checkins": {
+        "post": {
+          "summary": "Post a new checkin to the system",
+          "description": "Post a new checkin to the system",
+          "tags": [
+            "checkins"
+          ],
+          "requestBody": {
+            "description": "Checkin data that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCheckinRequest",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Checkin created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CheckinResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get checkins by query parameters",
+          "description": "Get checkins by query parameters",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUUID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "New",
+                  "Received",
+                  "Passed",
+                  "Failed"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "biometricType",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "VoiceVerification",
+                  "FaceVerification"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Master",
+                  "Scheduled",
+                  "Manual"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the checkins that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/CheckinResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/checkins/{id}": {
+        "delete": {
+          "summary": "Delete a specific checkin by id",
+          "description": "Delete a specific checkin by id",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific checkin by id",
+          "description": "Get a specific checkin by id",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired checkin",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CheckinResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "summary": "Update a checkin with specific properties",
+          "description": "Update an existing checkin and overwrite the given parameters",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Checkin properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCheckinRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Checkin updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CheckinResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/checkinsHistory": {
+        "get": {
+          "summary": "Get checkins history by query parameters",
+          "description": "Get checkins history by query parameters",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "entityID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the checkins history that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/CheckinHistoryResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/checkinsJobTrackers/{id}": {
+        "get": {
+          "summary": "Get a specific checkin job tracker by id",
+          "description": "Get a specific checkin job tracker by id",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired job tracker",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/JobTrackerResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/checkinsJobTrackers": {
+        "get": {
+          "summary": "Get job trackers for checkin schedules by query parameters",
+          "description": "Get job trackers for checkin schedules by query parameters",
+          "tags": [
+            "checkins"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Planned",
+                  "Processing",
+                  "Succeeded",
+                  "Failed",
+                  "Canceled"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the checkin job trackerss that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/JobTrackerResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/configuration": {
+        "get": {
+          "summary": "Get application configuration",
+          "description": "Get application configuration, the configuration response is different from authenticated and unauthenticated user",
+          "tags": [
+            "configuration"
+          ],
+          "responses": {
+            "200": {
+              "description": "get the application configuration",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "locales": {
+                        "description": "for unauthenticated users",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "defaultLocale": {
+                        "description": "for unauthenticated users",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "configuration": {
+                      "value": {
+                        "locales": [
+                          "es-ES",
+                          "en-US",
+                          "de-DE"
+                        ],
+                        "defaultLocale": "en-US"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/contactLists": {
+        "post": {
+          "summary": "Adds a new contact list to the system",
+          "description": "Adds a new contact list to the system. Only one entry with Global type is allowed. When type is not Global, customer must have a value. Name is unique per customer.",
+          "tags": [
+            "contactLists"
+          ],
+          "requestBody": {
+            "description": "Contact list data that needs to be added to the system.",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactList"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Contact list created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ContactList"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get contact list by parameters",
+          "description": "Get contact list by parameters",
+          "tags": [
+            "contactLists"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "name",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Global",
+                  "Customer",
+                  "Group",
+                  "User",
+                  "Private"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "notes",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "customer",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "contactsSearch",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Search in all contacts fields (addresses, phones, emails etc.)"
+            },
+            {
+              "in": "query",
+              "name": "userID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Search all contactLists by userID. the values can be a valid userID or 'current' (for the current authenticated user). If the userID is 'current', the parameter type will be overwritten."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the contact lists that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "contactLists": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/ContactList"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/contactLists/{id}": {
+        "delete": {
+          "summary": "Delete a specific contact list by id.",
+          "description": "Delete a specific contact list by id. Deleting contact list that is attached to a user, is not allowed.",
+          "tags": [
+            "contactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific contact list by id",
+          "description": "Get a specific contact list by id",
+          "tags": [
+            "contactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired contact list",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ContactList"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "summary": "Update a contact list with specific properties",
+          "description": "Update a contact list with specific properties. Name is unique per customer.",
+          "tags": [
+            "contactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Contact List properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/updateContactListRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Contact list updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ContactList"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/userContactLists": {
+        "post": {
+          "summary": "Adds a new user contact lists to the system.",
+          "description": "Adds a new user contact lists to the system. All contact lists must exists in the system.",
+          "tags": [
+            "userContactLists"
+          ],
+          "requestBody": {
+            "description": "User Contact lists data that needs to be added to the system. Each id should exist in the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContactLists"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User contact lists created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserContactLists"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/userContactLists/{id}": {
+        "delete": {
+          "summary": "Delete a specific user contact lists by id.",
+          "description": "Delete a specific user contact lists by id.",
+          "tags": [
+            "userContactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get user contact lists attached to a user by id",
+          "description": "Get user contact lists attached to a user by id",
+          "tags": [
+            "userContactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired user contact lists",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserContactLists"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "summary": "Update a user contact list with specific properties.",
+          "description": "Update an existing user contact list and overwrite the given parameters",
+          "tags": [
+            "userContactLists"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "User contact lists properties to overwrite. Each id should exist in the system.",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "contactListIDs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User Contact list updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserContactLists"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/documents": {
+        "post": {
+          "summary": "Post a new document to the system",
+          "description": "Post a new document to the system",
+          "tags": [
+            "documents"
+          ],
+          "requestBody": {
+            "description": "Document metadata that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDocumentRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Document created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DocumentResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get documents by query parameters",
+          "description": "Get documents by query parameters",
+          "tags": [
+            "documents"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Picture"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "size",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the documents that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/DocumentResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/documents/{id}": {
+        "delete": {
+          "summary": "Delete a specific document by id",
+          "description": "Delete a specific document by id",
+          "tags": [
+            "documents"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific document by id",
+          "description": "Get a specific document by id",
+          "tags": [
+            "documents"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired document",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DocumentResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/documents/generatePreSignedURL": {
+        "post": {
+          "summary": "Create a temporary pre-signed MinIO URL",
+          "description": "Create a temporary pre-signed MinIO URL in order to upload Subject's document",
+          "tags": [
+            "documents"
+          ],
+          "requestBody": {
+            "description": "Document metadata to generate corresponding file location",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratePreSignedURLRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Pre-Singed URL created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PreSignedURLResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/enrollments": {
+        "post": {
+          "summary": "Post a new enrollment to the system",
+          "description": "Post a new enrollment to the system",
+          "tags": [
+            "enrollments"
+          ],
+          "requestBody": {
+            "description": "Enrollment data that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrollmentRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Enrollment created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Enrollment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get enrollment by query parameters",
+          "description": "Get enrollment by query parameters",
+          "tags": [
+            "enrollments"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUUID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "New",
+                  "Received",
+                  "Passed",
+                  "Failed"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "VoiceEnroll",
+                  "FaceEnroll"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the enrollments that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Enrollment"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/enrollments/{id}": {
+        "delete": {
+          "summary": "Delete a specific enrollment by id",
+          "description": "Delete a specific enrollment by id",
+          "tags": [
+            "enrollments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific enrollment by id",
+          "description": "Get a specific enrollment by id",
+          "tags": [
+            "enrollments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired enrollment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Enrollment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an enrollment with specific properties",
+          "description": "Update an existing enrollment and overwrite the given parameters",
+          "tags": [
+            "enrollments"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Enrollment properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrollmentUpdateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Enrollment updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Enrollment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/messages": {
+        "post": {
+          "summary": "Post a new message to the subject message board",
+          "description": "Post a new message to the subject message board",
+          "tags": [
+            "messages"
+          ],
+          "requestBody": {
+            "description": "Message information that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Message created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get Messages by query parameters",
+          "description": "Get Messages by query parameters",
+          "tags": [
+            "messages"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID!",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "initiatorUserID not equal"
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "New",
+                  "Sent",
+                  "Read",
+                  "Received"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "senderName",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the messages that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Message"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/messages/{id}": {
+        "delete": {
+          "summary": "Delete a specific message by id",
+          "description": "Delete a specific message by id",
+          "tags": [
+            "messages"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific Message by id",
+          "description": "Get a specific Message by id",
+          "tags": [
+            "messages"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired message",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "summary": "Update a message with specific properties",
+          "description": "Update a message with specific properties\n ",
+          "tags": [
+            "messages"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "Message properties to update",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/messageUpdateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Message updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/messages/bulk": {
+        "patch": {
+          "summary": "Update a bulk of messages with specific properties and according to a specific filter",
+          "description": "Update a bulk of messages with specific properties and according to a specific filter",
+          "tags": [
+            "messages"
+          ],
+          "requestBody": {
+            "description": "The filter and fields for the bulk request",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBulkRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Messages updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/MessageBulkResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/notificationTokens": {
+        "post": {
+          "summary": "Create cloud message token in DB",
+          "description": "Create cloud message token in DB",
+          "tags": [
+            "notifications"
+          ],
+          "requestBody": {
+            "description": "Valid token",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationTokenRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Notification token successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationToken"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/notificationTokens/{id}": {
+        "get": {
+          "summary": "Get a specific notification token by id",
+          "description": "Get a specific notification token by id",
+          "tags": [
+            "notifications"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired notification token",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationToken"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReports": {
+        "post": {
+          "summary": "Adds a new Self Report to the system",
+          "description": "Adds a new Self Report to the system. If template ID has a value, apply its questions. Otherwise, apply from the questions section.",
+          "tags": [
+            "selfReports"
+          ],
+          "requestBody": {
+            "description": "Self Report data that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelfReportRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Self Report created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SelfReport"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get self report by query parameters",
+          "description": "Get self report by query parameters",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "initiatorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUUID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "New",
+                  "Read",
+                  "Answered"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Master",
+                  "Scheduled",
+                  "Manual"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the self reports that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/SelfReport"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReports/{id}": {
+        "delete": {
+          "summary": "Delete a specific self report by id.",
+          "description": "Delete a specific self report by id. Only Self Report with state New can be deleted from the system.",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific self report by id",
+          "description": "Get a specific self report by id",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired self report",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SelfReport"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an self report with specific properties",
+          "description": "Update an existing self report and overwrite the given parameters",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "description": "SelfReport properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelfReportUpdateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "SelfReport updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SelfReport"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReportsHistory": {
+        "get": {
+          "summary": "Get self reports history by query parameters",
+          "description": "Get self reports history by query parameters",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "entityID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the self reports history that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TemplateHistoryResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReportsJobTrackers/{id}": {
+        "get": {
+          "summary": "Get a specific self report job tracker by id",
+          "description": "Get a specific self report job tracker by id",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desired job tracker",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/JobTrackerResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReportsJobTrackers": {
+        "get": {
+          "summary": "Get job trackers for self report schedules by query parameters",
+          "description": "Get job trackers for self report schedules by query parameters",
+          "tags": [
+            "selfReports"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Planned",
+                  "Processing",
+                  "Succeeded",
+                  "Failed",
+                  "Canceled"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "scheduleID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the self report job trackerss that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/JobTrackerResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReports/templates": {
+        "post": {
+          "summary": "Adds a new Tempalte to the system",
+          "description": "Adds a new Tempalte to the system",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "requestBody": {
+            "description": "Tempalte data that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Tempalte created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Template"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get all Templates",
+          "description": "Get all Templates",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the templates",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "templates": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Template"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update a Tempalte with specific properties",
+          "description": "Updates an existing Template and overwrite the given parameters",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "requestBody": {
+            "description": "Template properties to overwrite",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateUpdateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Tempalte updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Template"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReports/templates/{id}": {
+        "delete": {
+          "summary": "Delete a specific Template by id",
+          "description": "Delete a specific Template by id",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (invalid id)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a specific Template by id",
+          "description": "Get a specific Template by id",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the desire template",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Template"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (invalid id)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReportTemplatesHistory": {
+        "get": {
+          "summary": "Get Templates history by filter",
+          "description": "Get Templates history by filter",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "recipientUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "entityID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "number"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the templates history that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TemplateHistory"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/selfReports/templates/": {
+        "get": {
+          "summary": "Get Templates by filter",
+          "description": "Get Templates by filter",
+          "tags": [
+            "selfReports/templates"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "authorUserID",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "name",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "from",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "to",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the templates that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "templates": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Template"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/info": {
+        "get": {
+          "summary": "Retrieves the environment's info",
+          "description": "Retrieves the environment's info",
+          "tags": [
+            "system"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns environment's info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ServiceInfoResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/serviceInfo/{name}": {
+        "get": {
+          "summary": "Retrieves service info by service name",
+          "description": "Retrieves service info by service name",
+          "tags": [
+            "system"
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/NameInPath"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns service's info",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ServiceInfoResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/terms": {
+        "post": {
+          "summary": "accept terms of use",
+          "description": "accept terms of use",
+          "tags": [
+            "terms"
+          ],
+          "responses": {
+            "200": {
+              "description": "Terms accepted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get application terms of use",
+          "description": "Get application terms of use",
+          "tags": [
+            "terms"
+          ],
+          "responses": {
+            "200": {
+              "description": "get the application terms of use",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "terms": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users": {
+        "post": {
+          "summary": "Adds a new user to the system",
+          "description": "Adds a new user to the system and to Active Directory",
+          "tags": [
+            "users"
+          ],
+          "requestBody": {
+            "description": "User object that needs to be added to the system",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User created successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Retrieves all users by query parameters",
+          "description": "Retrieves all users by query parameters",
+          "tags": [
+            "users"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "username",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "contract",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "phoneNumber",
+              "schema": {
+                "type": "string"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "state",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "PreActive",
+                  "Active",
+                  "PostActive",
+                  "Suspend",
+                  "Locked"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Subject",
+                  "Administrator",
+                  "Officer"
+                ]
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            {
+              "in": "query",
+              "name": "pageSize",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns all the users that match the filter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "metadata": {
+                        "$ref": "#/components/schemas/MetadataResponse"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/UserResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/current": {
+        "get": {
+          "summary": "Retrieves the authenticated user from token",
+          "description": "Retrieves the current authenticated user",
+          "tags": [
+            "users"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the current authenticated user's profile",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "$ref": "#/components/schemas/UserResponse"
+                      },
+                      "unreadMessagesCount": {
+                        "type": "integer"
+                      },
+                      "selfReports": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "biometricType": {
+                              "type": "string",
+                              "enum": [
+                                "VoiceVerification",
+                                "FaceVerification"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "enrollmentInfo": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "FaceEnroll",
+                              "VoiceEnroll"
+                            ]
+                          }
+                        }
+                      },
+                      "checkinInfo": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "FaceVerification",
+                              "VoiceVerification"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{id}": {
+        "delete": {
+          "summary": "Delete a specific user by id",
+          "description": "Delete a specific user by id",
+          "tags": [
+            "users"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "The resource was deleted successfully."
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Retrieves a user by its id",
+          "description": "Retrieves a user by its id",
+          "tags": [
+            "users"
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/IdInPath"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns user's profile",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update a user with specific properties",
+          "description": "Updates an existing user and overwrite the given parameters",
+          "tags": [
+            "users"
+          ],
+          "requestBody": {
+            "description": "User object to be overwriten",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User updated successfully.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - request format is invalid (broken json, required field missing, etc.)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequest"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found - requested resource was not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotFound"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "parameters": {
+        "IdInPath": {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        "NameInPath": {
+          "name": "Name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "APIGateway",
+              "Users",
+              "SelfReports",
+              "Notifications",
+              "Enrollments",
+              "Checkins",
+              "Contacts",
+              "Messages",
+              "Location",
+              "Biometric"
+            ]
+          }
+        }
+      },
+      "schemas": {
+        "AppointmentInstances": {
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "address": {
+              "$ref": "#/components/schemas/addressInfo"
+            },
+            "phone": {
+              "$ref": "#/components/schemas/phoneInfo"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "Appointment": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Sent",
+                "Received",
+                "VerificationInitiated",
+                "Verifying",
+                "ReadyForProcessing",
+                "Processing",
+                "Passed",
+                "Failed",
+                "Aborted",
+                "Expired"
+              ]
+            },
+            "address": {
+              "$ref": "#/components/schemas/addressInfo"
+            },
+            "phone": {
+              "$ref": "#/components/schemas/phoneInfo"
+            },
+            "biometric": {
+              "$ref": "#/components/schemas/BiometricSelfReport"
+            },
+            "location": {
+              "$ref": "#/components/schemas/LocationSelfReport"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            },
+            "scheduleID": {
+              "type": "string"
+            },
+            "masterID": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Master",
+                "Scheduled"
+              ]
+            },
+            "initiator": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "recipient": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/AppointmentActivityInfo"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "AppointmentActivityInfo": {
+          "properties": {
+            "initiatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "changedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "receivedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "respondedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "CheckinHistoryResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "modifiedBy": {
+              "type": "string"
+            },
+            "entity": {
+              "$ref": "#/components/schemas/CheckinResponse"
+            },
+            "operation": {
+              "type": "string",
+              "enum": [
+                "Create",
+                "Update",
+                "Delete"
+              ]
+            },
+            "modifiedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "CreateAppointmentRequest": {
+          "required": [
+            "recipient",
+            "scheduleInfo"
+          ],
+          "properties": {
+            "recipient": {
+              "type": "object",
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "title": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "address": {
+              "$ref": "#/components/schemas/addressInfo"
+            },
+            "phone": {
+              "$ref": "#/components/schemas/phoneInfo"
+            },
+            "biometric": {
+              "type": "object",
+              "$ref": "#/components/checkin/Biometric"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "UpdateAppointmentRequest": {
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "Received",
+                "ReadyForProcessing"
+              ]
+            },
+            "biometric": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "Passed",
+                    "Failed"
+                  ]
+                }
+              }
+            },
+            "location": {
+              "$ref": "#/components/checkin/LocationRequest"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            },
+            "phone": {
+              "$ref": "#/components/schemas/phoneInfo"
+            },
+            "address": {
+              "$ref": "#/components/schemas/addressInfo"
+            }
+          }
+        },
+        "login": {
+          "required": [
+            "username",
+            "password",
+            "UUID"
+          ],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "UUID": {
+              "type": "string"
+            },
+            "locale": {
+              "type": "string"
+            }
+          }
+        },
+        "loginResponse": {
+          "properties": {
+            "token": {
+              "type": "string"
+            }
+          }
+        },
+        "setUserCredentials": {
+          "required": [
+            "username",
+            "password",
+            "UUID"
+          ],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "UUID": {
+              "type": "string"
+            },
+            "locale": {
+              "type": "string"
+            }
+          }
+        },
+        "setUserCredentialsResponse": {
+          "properties": {
+            "token": {
+              "type": "string"
+            }
+          }
+        },
+        "validateUsername": {
+          "required": [
+            "username",
+            "UUID"
+          ],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "UUID": {
+              "type": "string"
+            }
+          }
+        },
+        "validateUsernameResponse": {
+          "properties": {
+            "state": {
+              "type": "string",
+              "description": "(Active/PreActive)"
+            }
+          }
+        },
+        "CheckinResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/ActivityInfo"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Received",
+                "Passed",
+                "Failed"
+              ]
+            },
+            "location": {
+              "$ref": "#/components/checkin/LocationResponse"
+            },
+            "biometric": {
+              "$ref": "#/components/checkin/Biometric"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            },
+            "scheduleID": {
+              "type": "string"
+            },
+            "masterID": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Master",
+                "Manual",
+                "Scheduled"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "SelfReport",
+                    "Enrollment",
+                    "Checkin",
+                    "Appointment"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "CreateCheckinRequest": {
+          "required": [
+            "recipient",
+            "type"
+          ],
+          "properties": {
+            "recipient": {
+              "type": "object",
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "biometric": {
+              "type": "object",
+              "$ref": "#/components/checkin/Biometric"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "UpdateCheckinRequest": {
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "Received",
+                "ReadyForProcessing"
+              ]
+            },
+            "biometric": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "Passed",
+                    "Failed"
+                  ]
+                }
+              }
+            },
+            "location": {
+              "type": "object",
+              "$ref": "#/components/checkin/LocationRequest"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "ActivityInfo": {
+          "properties": {
+            "initiatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sentAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "receivedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "respondedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "initiator": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "recipient": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          }
+        },
+        "BadRequest": {
+          "$ref": "#/components/schemas/CustomError"
+        },
+        "CustomError": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "httpStatus": {
+              "type": "string"
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "NotFound": {
+          "$ref": "#/components/schemas/CustomError"
+        },
+        "UnprocessableEntity": {
+          "$ref": "#/components/schemas/CustomError"
+        },
+        "UserInfo": {
+          "properties": {
+            "userID": {
+              "type": "string"
+            },
+            "UUID": {
+              "type": "string"
+            }
+          }
+        },
+        "addressInfo": {
+          "required": [
+            "street",
+            "city",
+            "country"
+          ],
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "formattedAddress": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ContactList": {
+          "required": [
+            "name",
+            "type",
+            "contacts"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/contacts"
+              }
+            },
+            "notes": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Global",
+                "Customer",
+                "Group",
+                "User",
+                "Private"
+              ]
+            },
+            "customer": {
+              "type": "string"
+            }
+          }
+        },
+        "contacts": {
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "phones": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/phoneInfo"
+              }
+            },
+            "emails": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/emailInfo"
+              }
+            },
+            "addresses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/addressInfo"
+              }
+            },
+            "contactPerson": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "order": {
+              "type": "number"
+            },
+            "category": {
+              "type": "string"
+            },
+            "organization": {
+              "type": "string"
+            }
+          }
+        },
+        "emailInfo": {
+          "required": [
+            "email"
+          ],
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            }
+          }
+        },
+        "phoneInfo": {
+          "required": [
+            "number"
+          ],
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            }
+          }
+        },
+        "updateContactListRequest": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "contacts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/contacts"
+              }
+            },
+            "notes": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Read",
+                "Answered"
+              ]
+            }
+          }
+        },
+        "UserContactLists": {
+          "required": [
+            "userID",
+            "contactListIDs"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "userID": {
+              "type": "string"
+            },
+            "contactListIDs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "CreateDocumentRequest": {
+          "required": [
+            "recipientUserID",
+            "name",
+            "url",
+            "type"
+          ],
+          "properties": {
+            "recipientUserID": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "type": {
+              "type": "enum",
+              "enum": [
+                "PDF",
+                "Picture"
+              ]
+            },
+            "size": {
+              "type": "number"
+            }
+          }
+        },
+        "DocumentResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "initiator": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "recipientUserID": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "PDF",
+                "Picture"
+              ]
+            },
+            "size": {
+              "type": "number"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "GeneratePreSignedURLRequest": {
+          "required": [
+            "bucketName",
+            "fileName"
+          ],
+          "properties": {
+            "bucketName": {
+              "type": "string"
+            },
+            "fileName": {
+              "type": "string"
+            }
+          }
+        },
+        "PreSignedURLResponse": {
+          "properties": {
+            "presignedURL": {
+              "type": "string"
+            }
+          }
+        },
+        "Enrollment": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "VoiceEnroll",
+                "FaceEnroll"
+              ]
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/ActivityInfo"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Received",
+                "Passed",
+                "Failed"
+              ]
+            },
+            "phrase": {
+              "type": "string",
+              "description": "Only for voice enrollment"
+            },
+            "language": {
+              "type": "string",
+              "description": "Only for voice enrollment"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "EnrollmentRequest": {
+          "required": [
+            "recipient"
+          ],
+          "properties": {
+            "recipient": {
+              "type": "object",
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "VoiceEnroll",
+                "FaceEnroll"
+              ]
+            },
+            "language": {
+              "type": "string"
+            },
+            "phrase": {
+              "type": "string"
+            }
+          }
+        },
+        "EnrollmentUpdateRequest": {
+          "required": [
+            "state"
+          ],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Received",
+                "Passed",
+                "Failed"
+              ]
+            },
+            "biometric": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "MetadataResponse": {
+          "properties": {
+            "page": {
+              "type": "number"
+            },
+            "pageSize": {
+              "type": "number"
+            },
+            "count": {
+              "type": "number"
+            }
+          }
+        },
+        "JobTrackerResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Start",
+                "Random",
+                "Single",
+                "End",
+                "Reminder"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "Planned",
+                "Processing",
+                "Succeeded",
+                "Failed",
+                "Canceled"
+              ]
+            },
+            "scheduleID": {
+              "type": "string"
+            },
+            "consumer": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "plannedTime": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "startedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "finishedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "randomIndex": {
+              "type": "integer"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "Message": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "recipientUserID": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "senderName": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Sent",
+                "Received",
+                "Read"
+              ]
+            },
+            "notificationType": {
+              "type": "string",
+              "enum": [
+                "PushNotification",
+                "SMS",
+                "Email"
+              ]
+            },
+            "initiator": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/MessageActivityInfo"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "MessageActivityInfo": {
+          "properties": {
+            "initiatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sentAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "receivedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "readAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "MessageBulkFields": {
+          "required": [
+            "state"
+          ],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Sent",
+                "Read",
+                "Recieved"
+              ]
+            }
+          }
+        },
+        "MessageBulkFilter": {
+          "required": [
+            "recipientUserID"
+          ],
+          "properties": {
+            "recipientUserID": {
+              "type": "string"
+            },
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "from": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "to": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "MessageBulkRequest": {
+          "required": [
+            "filter",
+            "fields"
+          ],
+          "properties": {
+            "filter": {
+              "type": "object",
+              "$ref": "#/components/schemas/MessageBulkFilter"
+            },
+            "fields": {
+              "type": "object",
+              "$ref": "#/components/schemas/MessageBulkFields"
+            }
+          }
+        },
+        "MessageBulkResponse": {
+          "properties": {
+            "recordsUpdated": {
+              "type": "number"
+            }
+          }
+        },
+        "MessageRequest": {
+          "required": [
+            "message",
+            "recipientUserID"
+          ],
+          "properties": {
+            "recipientUserID": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "senderName": {
+              "type": "string"
+            },
+            "notificationType": {
+              "type": "string",
+              "enum": [
+                "PushNotification",
+                "SMS",
+                "Email"
+              ]
+            }
+          }
+        },
+        "messageUpdateRequest": {
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Sent",
+                "Read",
+                "Recieved"
+              ]
+            }
+          }
+        },
+        "NotificationToken": {
+          "properties": {
+            "userInfo": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "token": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "id": {
+              "type": "string"
+            },
+            "operatingSystem": {
+              "type": "string",
+              "enum": [
+                "iOS",
+                "Android"
+              ]
+            }
+          }
+        },
+        "NotificationTokenRequest": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "operatingSystem": {
+              "type": "string",
+              "enum": [
+                "iOS",
+                "Android"
+              ]
+            }
+          }
+        },
+        "Recurrence": {
+          "properties": {
+            "interval": {
+              "type": "integer"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Daily",
+                "Weekly",
+                "Monthly",
+                "Yearly",
+                "RelativeMonthly",
+                "RelativeYearly"
+              ]
+            },
+            "daysOfWeek": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Sunday",
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ]
+              }
+            },
+            "daysOfMonth": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "deletedInstances": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "date string in ISO format \"yyyy-mm-dd\""
+              }
+            },
+            "numberOfExecutedInstances": {
+              "type": "integer"
+            },
+            "range": {
+              "$ref": "#/components/schemas/ScheduleRange"
+            }
+          }
+        },
+        "Reminder": {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "BeforeStart",
+                "AfterStart",
+                "BeforeEnd",
+                "AfterEnd"
+              ]
+            },
+            "offsetInSeconds": {
+              "type": "integer"
+            }
+          }
+        },
+        "ScheduleActivityInfo": {
+          "properties": {
+            "activatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "deactivatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "ScheduleInfo": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Active",
+                "Deactivated"
+              ]
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/ScheduleActivityInfo"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "randomEvents": {
+              "type": "integer"
+            },
+            "recurrence": {
+              "$ref": "#/components/schemas/Recurrence"
+            },
+            "reminders": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Reminder"
+              }
+            }
+          }
+        },
+        "ScheduleRange": {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "NoEnd",
+                "EndDate",
+                "Numbered"
+              ]
+            },
+            "endDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "numberOfOccurrences": {
+              "type": "integer"
+            }
+          }
+        },
+        "Question": {
+          "required": [
+            "question",
+            "order",
+            "type"
+          ],
+          "properties": {
+            "question": {
+              "type": "string"
+            },
+            "order": {
+              "type": "number"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "YesNo",
+                "SingleAnswer",
+                "MultipleAnswer",
+                "FreeText"
+              ]
+            },
+            "extraInfo": {
+              "type": "object"
+            }
+          }
+        },
+        "SelfReport": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "activityInfo": {
+              "$ref": "#/components/schemas/ActivityInfo"
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "$ref": "#/components/schemas/Question"
+                  },
+                  "answer": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Read",
+                "Answered"
+              ]
+            },
+            "biometric": {
+              "$ref": "#/components/schemas/BiometricSelfReport"
+            },
+            "location": {
+              "$ref": "#/components/schemas/LocationSelfReport"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            },
+            "scheduleID": {
+              "type": "string"
+            },
+            "masterID": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "Master",
+                "Manual",
+                "Scheduled"
+              ]
+            }
+          }
+        },
+        "BiometricSelfReport": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "VoiceVerification",
+                "FaceVerification"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Recieved",
+                "Answered"
+              ]
+            }
+          }
+        },
+        "BiometricSelfReportRequest": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "VoiceVerification",
+                "FaceVerification"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "New",
+                "Recieved",
+                "Answered"
+              ]
+            },
+            "additionalInfo": {
+              "type": "object"
+            }
+          }
+        },
+        "SelfReportHistoryResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "modifiedBy": {
+              "type": "string"
+            },
+            "entity": {
+              "$ref": "#/components/schemas/SelfReport"
+            },
+            "operation": {
+              "type": "string",
+              "enum": [
+                "Create",
+                "Update",
+                "Delete"
+              ]
+            },
+            "modifiedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "LocationSelfReport": {
+          "required": [
+            "latitude",
+            "longitude",
+            "locationMethod",
+            "accuracy"
+          ],
+          "properties": {
+            "locationMethod": {
+              "type": "string",
+              "enum": [
+                "GPS",
+                "WIFI",
+                "LBS",
+                "Bluetooth"
+              ]
+            },
+            "latitude": {
+              "type": "number",
+              "description": "Valid values: -90 to 90"
+            },
+            "longitude": {
+              "type": "number",
+              "description": "Valid values: -180 to 180"
+            },
+            "accuracy": {
+              "type": "number",
+              "description": "must be greater than 0"
+            }
+          }
+        },
+        "LocationSelfReportRequest": {
+          "required": [
+            "latitude",
+            "longitude",
+            "locationMethod",
+            "accuracy"
+          ],
+          "properties": {
+            "locationMethod": {
+              "type": "string",
+              "enum": [
+                "GPS",
+                "WIFI",
+                "LBS",
+                "Bluetooth"
+              ]
+            },
+            "latitude": {
+              "type": "number",
+              "description": "Valid values: -90 to 90"
+            },
+            "longitude": {
+              "type": "number",
+              "description": "Valid values: -180 to 180"
+            },
+            "accuracy": {
+              "type": "number",
+              "description": "must be greater than 0"
+            },
+            "locationInfo": {
+              "type": "object"
+            }
+          }
+        },
+        "SelfReportRequest": {
+          "required": [
+            "recipient",
+            "biometricType"
+          ],
+          "properties": {
+            "recipient": {
+              "type": "object",
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "templateID": {
+              "type": "string"
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Question"
+              }
+            },
+            "biometricType": {
+              "type": "string",
+              "enum": [
+                "VoiceVerification",
+                "FaceVerification"
+              ]
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "SelfReportUpdateRequest": {
+          "required": [
+            "id",
+            "state"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "Read",
+                "Answered",
+                "Deactivated"
+              ]
+            },
+            "biometric": {
+              "$ref": "#/components/schemas/BiometricSelfReportRequest"
+            },
+            "location": {
+              "$ref": "#/components/schemas/LocationSelfReportRequest"
+            },
+            "scheduleInfo": {
+              "$ref": "#/components/schemas/ScheduleInfo"
+            }
+          }
+        },
+        "Template": {
+          "required": [
+            "name",
+            "questions"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "author": {
+              "items": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          }
+        },
+        "TemplateHistoryResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "modifiedBy": {
+              "type": "string"
+            },
+            "entity": {
+              "$ref": "#/components/schemas/Template"
+            },
+            "operation": {
+              "type": "string",
+              "enum": [
+                "Create",
+                "Update",
+                "Delete"
+              ]
+            },
+            "modifiedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "TemplateRequest": {
+          "required": [
+            "name",
+            "questions"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          }
+        },
+        "TemplateUpdateRequest": {
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          }
+        },
+        "serviceInfo": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        },
+        "ServiceInfoResponse": {
+          "required": [
+            "serviceInfos"
+          ],
+          "properties": {
+            "serviceInfos": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/serviceInfo"
+              }
+            }
+          }
+        },
+        "User": {
+          "required": [
+            "username",
+            "firstName",
+            "lastName",
+            "contract"
+          ],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "contract": {
+              "type": "string"
+            },
+            "middleName": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            },
+            "hintText": {
+              "type": "string"
+            },
+            "gender": {
+              "type": "string"
+            }
+          }
+        },
+        "UserResponse": {
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "termsAccepted": {
+              "type": "boolean"
+            },
+            "UUID": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            },
+            "middleName": {
+              "type": "string"
+            },
+            "hintText": {
+              "type": "string"
+            },
+            "contract": {
+              "type": "string"
+            },
+            "gender": {
+              "type": "string"
+            },
+            "biometric": {
+              "type": "object",
+              "properties": {
+                "voice": {
+                  "type": "object",
+                  "properties": {
+                    "vendorUserID": {
+                      "type": "string"
+                    },
+                    "phrase": {
+                      "type": "string"
+                    },
+                    "language": {
+                      "type": "string"
+                    },
+                    "enrolled": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "face": {
+                  "type": "object",
+                  "properties": {
+                    "vendorUserID": {
+                      "type": "string"
+                    },
+                    "enrolled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "checkin": {
+        "Biometric": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "VoiceVerification",
+                "FaceVerification"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "Failed",
+                "Passed"
+              ]
+            }
+          }
+        },
+        "LocationRequest": {
+          "required": [
+            "latitude",
+            "longitude",
+            "accuracy",
+            "method"
+          ],
+          "properties": {
+            "latitude": {
+              "type": "number"
+            },
+            "longitude": {
+              "type": "number"
+            },
+            "accuracy": {
+              "type": "number"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "GPS",
+                "WIFI",
+                "LBS",
+                "Bluetooth"
+              ]
+            },
+            "locationInfo": {
+              "type": "object"
+            }
+          }
+        },
+        "LocationResponse": {
+          "properties": {
+            "latitude": {
+              "type": "number"
+            },
+            "longitude": {
+              "type": "number"
+            },
+            "accuracy": {
+              "type": "number"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "GPS",
+                "WIFI",
+                "LBS",
+                "Bluetooth"
+              ]
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "authorization"
+        }
+      }
+    },
+    "tags": []
+  }
+  
